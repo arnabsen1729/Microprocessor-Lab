@@ -82,3 +82,8 @@ The contents of A will be added to the accumulator i.e `ACC += (*A)`.
 
 ## **ORA (OR Accumulator)**
 This instruction is used to OR contents of R with the Accumulator. The result of OR operation will be stored back in the Accumulator.
+
+## **INC (Increment)**
+This instruction is used to increment the contents of the operand by one.
+
+##
