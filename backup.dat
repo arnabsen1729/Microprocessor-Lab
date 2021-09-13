@@ -1,24 +1,13 @@
-true
-// write a subroutine to move a block of bytes from location X to location Y.
-// Note that the caller would specify X and Y;
-// the source and destination along with the block size, say, Z.
-// X, Y and Z are 16-bit quantities.
-// Storing Z in B-C
-// Storing X in D-E
-// Storing Y in H-L
-	   LXI B,0004
-	   LXI D,3000
-	   LXI H,4000
-	   CALL MOVE
-	   RET
-// Moving 4 bytes from 3000 -> 4000
+false
+	   LDA 3000	// copies the data from 3000h to accumulator, takes input
+	   LXI H,4000	// store the result
+	   CALL ISODD
+	   HLT
 
-MOVE:	   LDAX D
-	   MOV M,A
-	   INX H
-	   INX D
-	   DCX B
-	   MOV A,B
-	   ORA C
-	   JNZ MOVE
+ISODD:	   ANI 01
+	   JZ EVEN
+	   MVI M,01
+	   RET
+
+EVEN:	   MVI M,00
 	   RET

@@ -86,4 +86,9 @@ This instruction is used to OR contents of R with the Accumulator. The result of
 ## **INC (Increment)**
 This instruction is used to increment the contents of the operand by one.
 
-##
+## **ANI (And Immediate with Accumulator)**
+This instruction is used to AND 8-bit immediate data with the Accumulator’s content. The result of this ANDingoperation will be stored in the Accumulator itself over writing its previous content.
+
+```
+ANI Data
+```
