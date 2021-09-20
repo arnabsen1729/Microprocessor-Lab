@@ -1,6 +1,6 @@
 ; Write a function isODD(unsigned n) in assembly that takes an unsigned integer (a byte) and determines if it is odd (returns 1) or 0 if it is even.
-LDA 3000h ; copies the data from 3000h to accumulator, takes input
-LXI H, 4000; store the result
+LDA 3000h   ; copies the data from 3000h to accumulator, takes input
+LXI H, 4000 ; store the result
 CALL ISODD
 HLT
 
