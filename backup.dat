@@ -1,39 +1,54 @@
-true
+false
+# ORG 2000H
+# ARR : DB 2,4,7,9,10
+# ORG 0000H
+# N EQU 5
+# X EQU 8
+	   MVI C,05	// Number of elements in the Array
+	   DCR C
+	   MVI B,00
+	   MVI D,07	// Number we are looking for
+	   CALL SEARCH
+	   LXI H,ARR
+	   ADD L
+	   MOV L,A
+	   JNC NAD
+	   INR H
 
-MVI A,10h;
-STA 3000H;
-MVI A,10h;
-STA 3001H;
-MVI A,10h;
-STA 3002H;
+SEARCH:	   MOV A,B
+	   CMP C
+	   RNC	// Return if not carry
+	   ADD C
+	   JNC NOCARRY
+	   CMC
 
+NAD:	   MOV A,D
+	   CMP M
+	   JZ END
+	   JC END
+	   HLT
 
-MVI A,F1h;
-STA 4000H;
-MVI A,F1h;
-STA 4001H;
-MVI A,F1h;
-STA 4002H;
+END:	   CMC
+	   HLT
 
+NOCARRY:	   RAR	// Rotate Accumulator right by 1 bit (A = A >> 1)
+	   MOV E,A
+	   LXI H,ARR
+	   ADD L
+	   MOV L,A
+	   JNC NOPE
+	   INR H
 
-LXI H,3000H ; Y
-LXI D,4000H ; X
-MVI B,03h
-CALL SUM
-HLT
+NOPE:	   MOV A,D
+	   CMP M
+	   JC LEFT
+	   JZ END
+	   MOV B,E
+	   INR B
+	   JMP SEARCH
 
-SUM:
-  LDAX D ;copies the contents of that memory location D-E into the accumulator
-  ADC M  ;ADd with Carry
-  STAX D ;contents of the A are copied into the memory location
-  INX D
-  INX H
-  DCR B
-  JNZ SUM
-  JC CARRY
-  RET
-
-CARRY:
-  MVI A, 01h
-  STAX D
-  RET
+LEFT:	   MOV C,E
+	   DCR C
+	   JNZ SEARCH
+	   JZ END
+	   RET

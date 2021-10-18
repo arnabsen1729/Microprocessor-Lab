@@ -144,3 +144,4 @@ This instruction is used to AND 8-bit immediate data with the Accumulator’s co
 ```
 ANI Data
 ```
+## **CMP (Compare)**
