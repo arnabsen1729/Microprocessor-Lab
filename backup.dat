@@ -1,54 +1,22 @@
 false
-# ORG 2000H
-# ARR : DB 2,4,7,9,10
-# ORG 0000H
-# N EQU 5
-# X EQU 8
-	   MVI C,05	// Number of elements in the Array
-	   DCR C
-	   MVI B,00
-	   MVI D,07	// Number we are looking for
-	   CALL SEARCH
-	   LXI H,ARR
-	   ADD L
-	   MOV L,A
-	   JNC NAD
-	   INR H
+// Assuming 8004 is faulty
+	   LXI H,8004
+	   MVI M,01
+// Checking from 805 till 5 bytes
+	   LXI H,8000
+	   MVI B,05
+	   CALL CHECK
+	   HLT
 
-SEARCH:	   MOV A,B
-	   CMP C
-	   RNC	// Return if not carry
-	   ADD C
-	   JNC NOCARRY
+CHECK:	   MOV A,M
+	   ANI 01	// Doing ANDImmediate with 01
+	   JNZ FAULTY	// If Z is set
+	   INX H
+	   DCR B
+	   JNZ CHECK
 	   CMC
+	   STC
+	   RET
 
-NAD:	   MOV A,D
-	   CMP M
-	   JZ END
-	   JC END
-	   HLT
-
-END:	   CMC
-	   HLT
-
-NOCARRY:	   RAR	// Rotate Accumulator right by 1 bit (A = A >> 1)
-	   MOV E,A
-	   LXI H,ARR
-	   ADD L
-	   MOV L,A
-	   JNC NOPE
-	   INR H
-
-NOPE:	   MOV A,D
-	   CMP M
-	   JC LEFT
-	   JZ END
-	   MOV B,E
-	   INR B
-	   JMP SEARCH
-
-LEFT:	   MOV C,E
-	   DCR C
-	   JNZ SEARCH
-	   JZ END
+FAULTY:	   STC	// set Cy 1
 	   RET
