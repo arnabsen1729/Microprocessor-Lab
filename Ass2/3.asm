@@ -1,25 +1,15 @@
-//Write a function to add two multibyte numbers stored in location X and Y. The result is stored in X. Pass a parameter Z indicating the no. of bytes to be added.
+# ORG 3000h
+# ARR: DB 01,02,03,04
 
-// Manual Data Entry for Y
-MVI A,10h;
-STA 3000H;
-MVI A,10h;
-STA 3001H;
-MVI A,10h;
-STA 3002H;
+# ORG 4000h
+# ARR: DB 05,06,07,08
 
-// Manual Data Entry for X
-MVI A,F1h;
-STA 4000H;
-MVI A,F1h;
-STA 4001H;
-MVI A,F1h;
-STA 4002H;
+# LEN EQU 04
 
-
+# ORG 0000h
 LXI H,3000H ; Y
 LXI D,4000H ; X
-MVI B,03h
+MVI B, LEN  ; Z
 CALL SUM
 HLT
 

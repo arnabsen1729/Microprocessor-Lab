@@ -1,22 +1,26 @@
 true
+# ORG 3000H
+# ARR: DB 01,02,03,04
+# ORG 4000H
+# ARR: DB 05,06,07,FF
+# LEN EQU 04
 # ORG 0000H
-	   MVI A,0B
-	   SIM
-	   EI
+	   LXI H,3000	// Y
+	   LXI D,4000	// X
+	   MVI B,LEN	// Z
+	   CALL SUM
+	   HLT
 
-LOOP:	   MVI A,01
-	   JNZ LOOP
-# ORG 3C
-	   DI
+SUM:	   LDAX D	// copies the contents of that memory location D-E into the accumulator
+	   ADC M	// ADd with Carry
+	   STAX D	// contents of the A are copied into the memory location
 	   INX D
-	   CALL DEL80
-	   EI
+	   INX H
+	   DCR B
+	   JNZ SUM
+	   JC CARRY	// If there is some left out carry
 	   RET
 
-DEL80:	   LXI B,28AF
-
-DEL80LOOP:	   DCX B
-	   MOV A,B
-	   ORA C
-	   JNZ DEL80LOOP
+CARRY:	   MVI A,01
+	   STAX D
 	   RET
