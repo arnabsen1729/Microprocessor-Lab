@@ -1,26 +1,49 @@
 true
-# ORG 3000H
-# ARR: DB 01,02,03,04
-# ORG 4000H
-# ARR: DB 05,06,07,FF
-# LEN EQU 04
-# ORG 0000H
-	   LXI H,3000	// Y
-	   LXI D,4000	// X
-	   MVI B,LEN	// Z
-	   CALL SUM
+# ORG 1000H
+# MYREG EQU 2000H
+	   MVI A,10
+	   LXI B,1001
+	   LXI D,2002
+	   LXI H,3003
+	   SIM
+	   LXI SP,F001
+	   CALL MAIN
 	   HLT
 
-SUM:	   LDAX D	// copies the contents of that memory location D-E into the accumulator
-	   ADC M	// ADd with Carry
-	   STAX D	// contents of the A are copied into the memory location
-	   INX D
+MAIN:	   PUSH H
+	   PUSH D
+	   PUSH B
+	   PUSH PSW
+	   LXI H,MYREG
+	   POP D
+	   CALL NEXT
+	   POP D
+	   CALL NEXT
+	   POP D
+	   CALL NEXT
+	   POP D
+	   CALL NEXT
+	   RIM
+	   MOV M,A
 	   INX H
-	   DCR B
-	   JNZ SUM
-	   JC CARRY	// If there is some left out carry
+	   XCHG
+	   LXI H,0000
+	   DAD SP
+	   XCHG
+	   INX D
+	   INX D
+	   CALL NEXT
+	   XCHG
+	   XTHL
+	   XCHG
+	   CALL NEXT
+	   XCHG
+	   XTHL
+	   XCHG
 	   RET
 
-CARRY:	   MVI A,01
-	   STAX D
+NEXT:	   MOV M,D
+	   INX H
+	   MOV M,E
+	   INX H
 	   RET

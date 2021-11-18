@@ -1,22 +1,14 @@
-MVI A,95	// Values are stored
-STA 2041
-MVI A,85
-STA 2042
-MVI A,F5
-STA 2043
-MVI A,5A
-STA 2044
-MVI A,01
-STA 2045
-// Main logic starts
+# ORG 4000h
+# ARR: DB 04,05,01,02,03
+# LEN EQU 5
 
-START:
-  LXI H,2041
+# ORG 0000h
+
+MAIN:
+  LXI H,ARR
   MVI D,00
-  MOV C,05
+  MOV C,LEN
   DCR C
-  INX H
-
 CHECK:
   MOV A,M
   INX H
@@ -37,7 +29,7 @@ NEXTBYTE:
   JNZ CHECK
   MOV A,D
   CPI 01
-  JZ START
+  JZ MAIN
   HLT
 
 // CMP M
