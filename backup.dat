@@ -1,49 +1,25 @@
 true
-# ORG 1000H
-# MYREG EQU 2000H
-	   MVI A,10
-	   LXI B,1001
-	   LXI D,2002
-	   LXI H,3003
-	   SIM
-	   LXI SP,F001
-	   CALL MAIN
-	   HLT
+# ORG 0000H
+    MVI A,0B // To enable R7.5
+    SIM // Set Interrupt Mask
+    EI  // Enables Interrupt
 
-MAIN:	   PUSH H
-	   PUSH D
-	   PUSH B
-	   PUSH PSW
-	   LXI H,MYREG
-	   POP D
-	   CALL NEXT
-	   POP D
-	   CALL NEXT
-	   POP D
-	   CALL NEXT
-	   POP D
-	   CALL NEXT
-	   RIM
-	   MOV M,A
-	   INX H
-	   XCHG
-	   LXI H,0000
-	   DAD SP
-	   XCHG
-	   INX D
-	   INX D
-	   CALL NEXT
-	   XCHG
-	   XTHL
-	   XCHG
-	   CALL NEXT
-	   XCHG
-	   XTHL
-	   XCHG
-	   RET
+LOOP:
+    MVI A,01
+    JNZ LOOP
 
-NEXT:	   MOV M,D
-	   INX H
-	   MOV M,E
-	   INX H
-	   RET
+# ORG 3C
+    DI
+    INX D
+    CALL DEL80 // Adding some delay
+    EI
+    RET
+
+DEL80:	   LXI B,28AF
+
+DEL80LOOP:
+    DCX B
+    MOV A,B
+    ORA C
+    JNZ DEL80LOOP
+    RET
