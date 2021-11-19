@@ -1,4 +1,7 @@
 # Microprocessor
+
+[**FINAL REPORT**](./Report/toc.md)
+
 Microprocessor is a central processing unit on a single intergrated circuit containing millions of very small components including transistors, resistors and diodes.
 
 Name | Word Length | Addressing Cap | Number of Pins
